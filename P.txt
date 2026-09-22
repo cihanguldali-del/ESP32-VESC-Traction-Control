@@ -1,0 +1,124 @@
+P
+%% E-Bike ENERGY CONSUMPTION ANALYSIS
+clear; close all; clc;
+
+% Load the final data table containing the battery power profile.
+% --- GÜNCELLENEN SATIR ---
+% Önceki kodun çıktısı olan doğru dosyayı yüklüyoruz:
+try
+    % (İngilizce sürümü kullandıysanız bunu seçin)
+    load FinalPowerTable_DynamicSlope_3696.mat; 
+catch ME
+    try 
+        % (Türkçe sürümü kullandıysanız bunu seçin)
+        load FinalPowerTable_DinamikEğim_3696.mat;
+    catch ME_TR
+        error('Hata: FinalPowerTable_...mat dosyası bulunamadı. Önceki betiği çalıştırdığınızdan emin olun.');
+    end
+end
+% --- GÜNCELLEME SONU ---
+
+disp('Güç tablosu başarıyla yüklendi.');
+
+%% 1) Data Retrieval and Time Step
+% Use the smoothed Battery Power (P_b-out) calculated in the previous script.
+P_smooth_W = PowerTable.P_Battery_W_Smooth; % [W] Smoothed Electrical Power
+dt_seconds = 1;                             % [s] Time step (Data is 1 Hz)
+
+%% 2) Power to Energy Conversion (Integration)
+% Energy (E) is the integral of Power (P) over time (dt).
+% We only consider positive power (consumption) and ignore negative power (regeneration).
+P_consumption_W = P_smooth_W;
+
+% Set all non-positive power values (braking/regeneration) to zero.
+P_consumption_W(P_consumption_W < 0) = 0;
+
+% Total Energy in Watt-seconds (Ws) or Joules (J).
+Total_Energy_Ws = sum(P_consumption_W) * dt_seconds; 
+
+%% 3) Unit Conversion (Ws to Wh)
+% Convert from Watt-seconds to Watt-hours (1 hour = 3600 seconds).
+Total_Energy_Wh = Total_Energy_Ws / 3600; 
+
+%% 4) Results Output (Plain English)
+disp('--- TOPLAM ELEKTRİKSEL ENERJİ TÜKETİM ANALİZİ ---');
+% Display the total duration of the cycle
+fprintf('Analiz Edilen Döngü Süresi: %.2f saat\n', PowerTable.Time_h(end)); 
+% Display the calculated energy values
+fprintf('Gereken Toplam Elektriksel Enerji (Sadece Tüketim):\n');
+fprintf('-> %.0f Ws (Watt-saniye veya Joule)\n', Total_Energy_Ws);
+fprintf('-> %.2f Wh (Watt-saat)\n', Total_Energy_Wh);
+disp('----------------------------------------------------');
+
+% Final, simple consumption figure
+disp(['Toplam Tüketilen Enerji (Wh): ', num2str(Total_Energy_Wh)]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%% E-Bike ENERGY CONSUMPTION ANALYSIS
+clear; close all; clc;
+
+% Load the final data table containing the battery power profile.
+% --- GÜNCELLENEN SATIR ---
+% Önceki kodun çıktısı olan doğru dosyayı yüklüyoruz:
+try
+    % (İngilizce sürümü kullandıysanız bunu seçin)
+    load FinalPowerTable_DynamicSlope_3696.mat; 
+catch ME
+    try 
+        % (Türkçe sürümü kullandıysanız bunu seçin)
+        load FinalPowerTable_DinamikEğim_3696.mat;
+    catch ME_TR
+        error('Hata: FinalPowerTable_...mat dosyası bulunamadı. Önceki betiği çalıştırdığınızdan emin olun.');
+    end
+end
+% --- GÜNCELLEME SONU ---
+
+disp('Güç tablosu başarıyla yüklendi.');
+
+%% 1) Data Retrieval and Time Step
+% Use the smoothed Battery Power (P_b-out) calculated in the previous script.
+P_smooth_W = PowerTable.P_Battery_W_Smooth; % [W] Smoothed Electrical Power
+dt_seconds = 1;                             % [s] Time step (Data is 1 Hz)
+
+%% 2) Power to Energy Conversion (Integration)
+% Energy (E) is the integral of Power (P) over time (dt).
+% We only consider positive power (consumption) and ignore negative power (regeneration).
+P_consumption_W = P_smooth_W;
+
+% Set all non-positive power values (braking/regeneration) to zero.
+P_consumption_W(P_consumption_W < 0) = 0;
+
+% Total Energy in Watt-seconds (Ws) or Joules (J).
+Total_Energy_Ws = sum(P_consumption_W) * dt_seconds; 
+
+%% 3) Unit Conversion (Ws to Wh)
+% Convert from Watt-seconds to Watt-hours (1 hour = 3600 seconds).
+Total_Energy_Wh = Total_Energy_Ws / 3600; 
+
+%% 4) Results Output (Plain English)
+disp('--- TOPLAM ELEKTRİKSEL ENERJİ TÜKETİM ANALİZİ ---');
+% Display the total duration of the cycle
+fprintf('Analiz Edilen Döngü Süresi: %.2f saat\n', PowerTable.Time_h(end)); 
+% Display the calculated energy values
+fprintf('Gereken Toplam Elektriksel Enerji (Sadece Tüketim):\n');
+fprintf('-> %.0f Ws (Watt-saniye veya Joule)\n', Total_Energy_Ws);
+fprintf('-> %.2f Wh (Watt-saat)\n', Total_Energy_Wh);
+disp('----------------------------------------------------');
+
+% Final, simple consumption figure
+disp(['Toplam Tüketilen Enerji (Wh): ', num2str(Total_Energy_Wh)]);
